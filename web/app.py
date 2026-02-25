@@ -48,7 +48,9 @@ def tutorial_detail(slug):
 # =========================
 # PROBLEM DETAIL
 # =========================
-
+@app.route("/practice")
+def practice_home():
+    return render_template("practice.html", problems=problems)
 @app.route("/practice/<slug>")
 def problem_detail(slug):
 
