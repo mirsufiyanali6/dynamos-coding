@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="compiler-container">
+
+    <!-- HEADER -->
+    <div class="compiler-header">
+        <div class="title">Dynamos Coding IDE</div>
+        <div class="actions">
+            <button type="button" id="runBtn" class="btn-run">▶ Run</button>
+            <button type="button" id="clearBtn" class="btn-clear">Clear</button>
+        </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="compiler-grid">
+
+        <!-- LEFT SIDE (EDITOR) -->
+        <div class="editor-panel">
+            <textarea id="codeEditor"></textarea>
+        </div>
+
+        <!-- RIGHT SIDE (OUTPUT) -->
+        <div class="output-panel">
+            <div class="output-header">Console</div>
+            <div class="output-box"></div>
+        </div>
+
+    </div>
+
+    <!-- INPUT SECTION -->
+    <div class="input-panel">
+        <div class="input-title">Custom Input</div>
+        <textarea id="userInput" placeholder="Each line = one input() call"></textarea>
+    </div>
+
+</div>
+
+
+<!-- CodeMirror CSS -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+
+<!-- CodeMirror JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+
+<script>
+window.onload = function() {
+
+    var editor = CodeMirror.fromTextArea(
+        document.getElementById("codeEditor"),
+        {
+            mode: "python",
+            theme: "dracula",
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: false
+        }
+    );
+
+    editor.setSize("100%", "400px");
+    editor.setValue("");
+    editor.setCursor({line: 0, ch: 0});
+    editor.focus();
+
+    function runCode() {
+
+        fetch("/compiler", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code: editor.getValue(),
+                user_input: document.getElementById("userInput").value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            const outputBox = document.querySelector(".output-box");
+
+            if (data.output.includes("ERROR")) {
+                outputBox.innerHTML =
+                    "<span style='color:#ff6b6b; font-weight:bold;'>ERROR</span><br>" +
+                    data.output;
+            } else {
+                outputBox.innerHTML =
+                    "<span style='color:#22c55e; font-weight:bold;'>SUCCESS</span><br>" +
+                    data.output;
+            }
+
+        })
+        .catch(error => {
+            console.log("Error:", error);
+        });
+    }
+
+    document.getElementById("runBtn").addEventListener("click", runCode);
+
+    editor.setOption("extraKeys", {
+        "Shift-Enter": function() {
+            runCode();
+        }
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", function() {
+        editor.setValue("");
+        editor.focus();
+        editor.setCursor({line:0, ch:0});
+        document.querySelector(".output-box").innerHTML = "";
+        document.getElementById("userInput").value = "";
+    });
+
+};
+</script>
+
+{% endblock %}

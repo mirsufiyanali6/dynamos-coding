@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="hero">
+    <h1>Practice Problems</h1>
+    <p>Sharpen your skills by solving real Python challenges.</p>
+</div>
+
+<div style="max-width:1000px; margin:auto; padding:40px;">
+
+    <div style="background:#1e293b; padding:30px; border-radius:15px; margin-bottom:30px;">
+        <h3>Problem 1: Sum of Two Numbers</h3>
+        <p>Write a function that returns the sum of two numbers.</p>
+        <a href="/compiler?problem=sum" class="btn-main btn-primary">Solve</a>
+    </div>
+
+    <div style="background:#1e293b; padding:30px; border-radius:15px; margin-bottom:30px;">
+        <h3>Problem 2: Even or Odd</h3>
+        <p>Write a program to check whether a number is even or odd.</p>
+        <a href="/compiler?problem=evenodd" class="btn-main btn-success">Solve</a>
+
+    <div style="background:#1e293b; padding:30px; border-radius:15px;">
+        <h3>Problem 3: Factorial</h3>
+        <p>Write a function to calculate the factorial of a number.</p>
+        <a href="/compiler?problem=factorial" class="btn-main btn-warning">Solve</a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.tutorial-layout {
+    display: flex;
+    min-height: 90vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: #0f172a;
+    padding: 30px 20px;
+    border-right: 1px solid #1e293b;
+}
+
+.sidebar h3 {
+    color: #38bdf8;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: #cbd5e1;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background: #1e293b;
+}
+
+.sidebar a.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* Content */
+.tutorial-content {
+    flex: 1;
+    padding: 50px;
+}
+
+.tutorial-box {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+}
+
+.practice-box {
+    background: #111827;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.solution-box {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    display: none;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+</style>
+
+<div class="tutorial-layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <!-- Section 1 -->
+        <h3>Section 1<br>Python Fundamentals</h3>
+
+        {% for t in tutorials if t.section == "Python Fundamentals" %}
+            <a href="/tutorials/{{ t.slug }}"
+               class="{% if t.slug == tutorial.slug %}active{% endif %}">
+                {{ t.title }}
+            </a>
+        {% endfor %}
+
+        <!-- Section 2 -->
+        <h3 style="margin-top:30px;">Section 2<br>Control Flow</h3>
+
+        {% for t in tutorials if t.section == "Control Flow" %}
+            <a href="/tutorials/{{ t.slug }}"
+               class="{% if t.slug == tutorial.slug %}active{% endif %}">
+                {{ t.title }}
+            </a>
+        {% endfor %}
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="tutorial-content">
+
+        <h1>{{ tutorial.title }}</h1>
+
+        <div class="tutorial-box">
+            <pre style="white-space:pre-wrap; line-height:1.7;">
+{{ tutorial.content }}
+            </pre>
+        </div>
+
+        <div class="tutorial-box">
+            <h3>Practice Question</h3>
+
+            <div class="practice-box">
+                {{ tutorial.practice_question }}
+            </div>
+
+            <button class="btn-main btn-success"
+                    onclick="toggleSolution()"
+                    style="margin-top:15px;">
+                Show Solution
+            </button>
+
+            <div id="solutionBox" class="solution-box">
+{{ tutorial.practice_solution }}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function toggleSolution() {
+    const box = document.getElementById("solutionBox");
+    box.style.display =
+        box.style.display === "block" ? "none" : "block";
+}
+</script>
+
+{% endblock %}

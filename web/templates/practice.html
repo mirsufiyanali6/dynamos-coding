@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="hero">
+    <h1>Practice Problems</h1>
+    <p>Sharpen your skills by solving real Python challenges.</p>
+</div>
+
+<div style="max-width:1100px; margin:auto; padding:40px;">
+
+    <!-- EASY -->
+    <h2 style="margin-bottom:20px;">Easy</h2>
+    {% for problem in easy %}
+    <div style="background:#1e293b; padding:25px; border-radius:15px; margin-bottom:20px;">
+        <h3>{{ problem.title }}</h3>
+        <p style="color:#94a3b8;">{{ problem.description[:120] }}...</p>
+        <a href="/practice/{{ problem.slug }}" class="btn-main btn-success">
+            Solve
+        </a>
+    </div>
+    {% endfor %}
+
+    <!-- MEDIUM -->
+    <h2 style="margin:50px 0 20px 0;">Medium</h2>
+    {% for problem in medium %}
+    <div style="background:#1e293b; padding:25px; border-radius:15px; margin-bottom:20px;">
+        <h3>{{ problem.title }}</h3>
+        <p style="color:#94a3b8;">{{ problem.description[:120] }}...</p>
+        <a href="/practice/{{ problem.slug }}" class="btn-main btn-warning">
+            Solve
+        </a>
+    </div>
+    {% endfor %}
+
+    <!-- HARD -->
+    <h2 style="margin:50px 0 20px 0;">Hard</h2>
+    {% for problem in hard %}
+    <div style="background:#1e293b; padding:25px; border-radius:15px; margin-bottom:20px;">
+        <h3>{{ problem.title }}</h3>
+        <p style="color:#94a3b8;">{{ problem.description[:120] }}...</p>
+        <a href="/practice/{{ problem.slug }}" class="btn-main btn-danger">
+            Solve
+        </a>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

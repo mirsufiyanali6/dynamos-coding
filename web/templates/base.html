@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamos Coding</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        .compiler-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.compiler-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.compiler-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.editor-panel,
+.output-panel {
+    background: #111827;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.output-header {
+    padding: 12px;
+    background: #1f2937;
+    border-bottom: 1px solid #2d3748;
+    font-weight: bold;
+}
+
+.output-box {
+    padding: 20px;
+    min-height: 400px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+.input-panel {
+    margin-top: 20px;
+}
+
+.input-panel textarea {
+    width: 100%;
+    height: 100px;
+    background: #111827;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-run {
+    background: #2563eb;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-clear {
+    background: #facc15;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+        .output-box {
+            background: #111827;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 80px;
+            max-height: 250px;
+            overflow: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .output-box.success {
+            color: #22c55e;
+        }
+
+        .output-box.error {
+            color: #ff6b6b;
+        }
+        .problem-card {
+            background: #1e293b;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .problem-card h3 {
+             margin-top: 0;
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top, #0f172a, #020617 70%);
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 80px;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 1px;
+            color: #38bdf8;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 140px 20px 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #94a3b8;
+            margin-bottom: 50px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-success { background-color: #16a34a; color: white; }
+        .btn-warning { background-color: #facc15; color: black; }
+        .btn-danger  { background-color: #ef4444; color: white; }
+        .btn-main:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">Dynamos Coding</div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        © 2026 Dynamos Coding. All rights reserved.
+    </footer>
+
+</body>
+</html>

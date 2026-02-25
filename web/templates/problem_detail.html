@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.problem-container {
+    display: flex;
+    height: 85vh;
+}
+
+.problem-left {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    border-right: 1px solid #1e293b;
+}
+
+.problem-right {
+    flex: 1.2;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.CodeMirror {
+    height: 100% !important;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.output-box {
+    margin-top: 20px;
+    background: #111827;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 120px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+</style>
+
+<div class="problem-container">
+
+    <!-- LEFT PANEL -->
+    <div class="problem-left">
+
+        <h2>{{ problem.title }}</h2>
+        <p style="color:#94a3b8; font-weight:bold;">
+            Difficulty: {{ problem.difficulty|capitalize }}
+        </p>
+
+        <pre style="white-space:pre-wrap; line-height:1.6;">
+{{ problem.description }}
+        </pre>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="problem-right">
+
+<div class="editor-wrapper" style="border-radius:0 0 10px 10px; overflow:hidden;">
+    <textarea id="codeEditor">{{ problem.starter_code }}</textarea>
+</div>
+
+        <button id="submitBtn" class="btn-main btn-success" style="margin-top:20px;">
+            Submit
+        </button>
+
+        <div id="outputBox" class="output-box"></div>
+
+    </div>
+
+</div>
+
+<!-- CodeMirror CSS -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+
+<!-- CodeMirror JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+
+
+<script>
+window.onload = function() {
+    
+
+    var editor = CodeMirror.fromTextArea(
+        document.getElementById("codeEditor"),
+        {
+            mode: "python",
+            theme: "dracula",
+            lineNumbers: true
+        }
+    );
+
+    editor.setSize("100%", "100%");
+    // Lock first 2 lines (class + def)
+editor.markText(
+    {line: 0, ch: 0},
+    {line: 2, ch: 0},
+    { readOnly: true }
+);
+
+    function submitCode() {
+
+        fetch("/submit/{{ problem.slug }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code: editor.getValue()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            const outputBox = document.getElementById("outputBox");
+
+            if (data.status === "error") {
+                outputBox.innerHTML =
+                    "<span style='color:#ff6b6b; font-weight:bold;'>ERROR</span><br><br>" +
+                    data.message;
+                return;
+            }
+
+            let output = "";
+
+            if (data.all_passed) {
+                output += "✅ ALL TESTS PASSED\n\n";
+            } else {
+                output += "❌ SOME TESTS FAILED\n\n";
+            }
+
+            data.results.forEach(test => {
+
+    if (test.type === "visible") {
+
+        output += `Test ${test.test_number}:\n`;
+        output += `Input: ${JSON.stringify(test.input)}\n`;
+
+        if (test.passed) {
+            output += "Status: PASSED\n\n";
+        } else {
+            output += "Status: FAILED\n";
+            output += `Expected: ${JSON.stringify(test.expected)}\n`;
+            output += `Actual: ${JSON.stringify(test.actual)}\n\n`;
+        }
+
+    }
+
+});
+
+            outputBox.innerText = output;
+
+        });
+    }
+
+    document.getElementById("submitBtn")
+        .addEventListener("click", submitCode);
+
+};
+</script>
+
+{% endblock %}
