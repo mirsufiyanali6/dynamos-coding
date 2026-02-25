@@ -50,6 +50,16 @@ def tutorial_detail(slug):
 # =========================
 @app.route("/practice")
 def practice_home():
+    easy = [p for p in problems if p["difficulty"] == "easy"]
+    medium = [p for p in problems if p["difficulty"] == "medium"]
+    hard = [p for p in problems if p["difficulty"] == "hard"]
+
+    return render_template(
+        "practice.html",
+        easy=easy,
+        medium=medium,
+        hard=hard
+    )
     return render_template("practice.html", problems=problems)
 @app.route("/practice/<slug>")
 def problem_detail(slug):
